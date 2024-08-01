@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Book Worm</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #cart {
+            width: 80%;
+            max-width: 800px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        caption {
+            caption-side: top;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .button-group {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .button-group a {
+            display: inline-block;
+            margin-right: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button-group a:hover {
+            background-color: #0056b3;
+        }
+
+        .button-group button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button-group button:hover {
+            background-color: #218838;
+        }
+
+        .total-row {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="cart">
+
+        <section id="cart-items">
+            <table>
+                <caption>Your Shopping Cart</caption>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-table-body">
+                    <!-- Cart items will be inserted here by JavaScript -->
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="3">Total:</td>
+                        <td id="cart-total">$0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="button-group">
+                <a href="bookworm.html">Back to Shopping</a>
+                <button onclick="processPayment()">Proceed to Payment</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartTableBody = document.getElementById('cart-table-body');
+        const cartTotalCell = document.getElementById('cart-total');
+
+        function updateCartTable() {
+            let total = 0;
+            cartTableBody.innerHTML = ''; // Clear current rows
+
+            cart.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.title}</td>
+                    <td>$${item.price}</td>
+                    <td>${item.quantity}</td>
+                    <td>$${(item.price * item.quantity).toFixed(2)}</td>
+                `;
+                cartTableBody.appendChild(row);
+
+                total += item.price * item.quantity;
+            });
+
+            cartTotalCell.innerText = `$${total.toFixed(2)}`;
+        }
+
+        function processPayment() {
+    // Payment processing logic here
+    // For now, we'll just simulate payment completion with an alert
+    alert('Payment successful! Thank you for your purchase.');
+
+    // Clear the cart after payment is successful
+    localStorage.removeItem('cart');
+    updateCartTable();
+
+    // Redirect to index.html after payment
+    window.location.href = 'index.html'; // Replace with your actual main page URL
+}
+
+        // Initialize cart table on page load
+        updateCartTable();
+    </script>
+</body>
+</html>
